@@ -50,6 +50,11 @@ IFrameElement _iframe(String url) {
 /// Returns a random unsigned 32-bit integer.
 int _random() {
   final ary = new Uint32List(1);
-  window.crypto.getRandomValues(ary);
+  if (window.crypto.getRandomValues != null) {
+    window.crypto.getRandomValues(ary);
+  } else {
+    // Fallback for IE 11
+    window.msCrypto.getRandomValues(ary);
+  }
   return ary[0];
 }
